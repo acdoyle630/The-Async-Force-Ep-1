@@ -133,8 +133,10 @@ function getEmpire(){
   const requestData = JSON.parse(this.responseText);
   console.log('requestData: ', requestData);
   const filmsLi2 = document.createElement('h2');
-  filmsLi2.innerHTML = requestData.title;
-  films.appendChild(filmsLi2);
+  planetList2 = filmsLi2;
+  planetList2.id = 'empire';
+  planetList2.innerHTML = requestData.title;
+  films.appendChild(planetList2);
 }
 
 //Request Empire
@@ -143,17 +145,77 @@ oReq5.addEventListener('load', getEmpire);
 oReq5.open("GET", 'http://swapi.co/api/films/2/');
 oReq5.send();
 
+//request empire planets Array
+function empirePlanets () {
+  const requestData = JSON.parse(this.responseText);
+  console.log('requestData: ', requestData.planets);
+  let planetArray = requestData.planets;
+  //buildEmprire(planetArray);
+  DOMEmpire(planetArray);
+}
+
+// Loop empire planet array and request planets
+function DOMEmpire (arr){
+  console.log(arr);
+  for(var i = 0; i< arr.length; i++ ){
+    let oReq11 = new XMLHttpRequest();
+    oReq11.addEventListener('load', addEmpirePlanets);
+    oReq11.open('GET', arr[i]);
+    oReq11.send();
+  }
+}
+//Add Empire planets to DOM
+function addEmpirePlanets(){
+  let requestData = JSON.parse(this.responseText);
+  console.log('requestData: ', requestData);
+  let planets = document.createElement('li');
+  planets.innerHTML = requestData.name;
+  planetList2.appendChild(planets);
+}
+
+// Request data from Empire
+const oReq10 = new XMLHttpRequest();
+oReq10.addEventListener('load', empirePlanets);
+oReq10.open('GET', 'http://swapi.co/api/films/2/');
+oReq10.send();
+
+// Add Jedi to DOM
 function getJedi(){
   const requestData = JSON.parse(this.responseText);
   console.log('reqData', requestData);
+  const jedi = document.createElement('ul');
+  planetList3 = jedi;
   const filmsLi3 = document.createElement('h2');
+  filmsLi3.id = 'jedi';
   filmsLi3.innerHTML = requestData.title;
   films.appendChild(filmsLi3);
+  jediPlanets(requestData.planets);
 }
 
+//Request Jedi data
 const oReq6 = new XMLHttpRequest();
-
 oReq6.addEventListener('load', getJedi);
 oReq6.open('GET', 'http://swapi.co/api/films/3/');
 oReq6.send();
+
+// Loop Jedi planet array and request planets
+function jediPlanets (arr){
+  console.log(arr);
+  for(var i = 0; i< arr.length; i++ ){
+    let oReq11 = new XMLHttpRequest();
+    oReq11.addEventListener('load', addJediPlanets);
+    oReq11.open('GET', arr[i]);
+    oReq11.send();
+  }
+}
+
+//Add Jedi planets to DOM
+function addJediPlanets(){
+  let requestData = JSON.parse(this.responseText);
+  console.log('requestData: ', requestData);
+  let planets = document.createElement('li');
+  planets.innerHTML = requestData.name;
+  jedi.appendChild(planets);
+}
+
 
